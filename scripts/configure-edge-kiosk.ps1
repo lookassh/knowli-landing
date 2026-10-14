@@ -19,6 +19,7 @@ $AllowedUrls = @(
     'https://.start.devforce.pl'
     'https://.umiem.devforce.pl'
     'https://.agilefingers.com'
+    'https://www.edclub.com'
 
     # Dodatkowe strony:
     # 'https://.typinggameskids.com'
