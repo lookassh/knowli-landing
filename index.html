@@ -1,0 +1,256 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Strefa Nauki</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            background: #f3f6fb;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+        }
+
+        /* Górny pasek nawigacji */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 12px 22px;
+            background: #182438;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        nav button {
+            padding: 13px 22px;
+            border: 0;
+            border-radius: 10px;
+            background: #34445d;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        nav button:hover {
+            background: #49617f;
+        }
+
+        nav button.active {
+            background: #2563eb;
+        }
+
+        nav button:focus-visible {
+            outline: 3px solid #fbbf24;
+            outline-offset: 3px;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 8px;
+        }
+
+        .toolbar button {
+            border: 1px solid #64748b;
+            border-radius: 8px;
+            padding: 10px;
+            background: transparent;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .toolbar button:hover {
+            background: #34445d;
+        }
+
+        /* Obszar aplikacji */
+        main {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            flex: 1;
+            border: none;
+            background: white;
+        }
+
+        @media (max-width: 800px) {
+            header {
+                justify-content: center;
+                padding: 10px;
+            }
+
+            .logo {
+                width: 100%;
+                text-align: center;
+                font-size: 19px;
+            }
+
+            nav button {
+                padding: 12px 13px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        🚀 Strefa Nauki
+    </div>
+
+    <nav aria-label="Wybierz aplikację">
+
+        <button
+                type="button"
+                data-app="umiem"
+                onclick="openApp('umiem')">
+            📚 Umiem!
+        </button>
+
+        <button
+                type="button"
+                data-app="agile"
+                onclick="openApp('agile')">
+            ⌨️ AgileFingers
+        </button>
+
+        <button
+                type="button"
+                data-app="space"
+                onclick="openApp('space')">
+            🚀 Space Typer
+        </button>
+
+    </nav>
+
+    <div class="toolbar">
+        <button
+                type="button"
+                onclick="reloadApp()"
+                title="Odśwież aplikację">
+            🔄
+        </button>
+
+        <button
+                type="button"
+                onclick="openExternal()"
+                title="Otwórz w nowej karcie (test)">
+            ↗
+        </button>
+    </div>
+
+</header>
+
+<main>
+    <iframe
+            id="appFrame"
+            title="Aplikacja edukacyjna"
+            allow="microphone; autoplay; fullscreen"
+            allowfullscreen>
+    </iframe>
+</main>
+
+<script>
+    const apps = {
+        umiem: {
+            url: "https://umiem.devforce.pl"
+        },
+
+        agile: {
+            url: "https://agilefingers.com/pl/kurs/cwiczenie-1"
+        },
+
+        space: {
+            url: "https://typinggameskids.com/games/space-typer/"
+        }
+    };
+
+    let currentApp = "agile";
+
+    const frame = document.getElementById("appFrame");
+
+    function openApp(name) {
+        if (!apps[name]) return;
+
+        currentApp = name;
+
+        // Zmiana zawartości iframe
+        frame.src = apps[name].url;
+
+        // Podświetlenie aktywnego przycisku
+        document.querySelectorAll("nav button")
+            .forEach(button => {
+                const active = button.dataset.app === name;
+
+                button.classList.toggle("active", active);
+                button.setAttribute(
+                    "aria-pressed",
+                    String(active)
+                );
+            });
+    }
+
+    function reloadApp() {
+        // Ponowne załadowanie bieżącej strony
+        frame.src = frame.src;
+    }
+
+    function openExternal() {
+        // Pomocniczo do testowania poza kioskiem
+        window.open(
+            apps[currentApp].url,
+            "_blank",
+            "noopener,noreferrer"
+        );
+    }
+
+    // Aplikacja startowa
+    openApp("agile");
+</script>
+
+</body>
+</html>
